@@ -83,27 +83,35 @@ public class ControllerServlet extends HttpServlet {
 			}
 			String country = "US";
 			List<String> errMessage = new ArrayList<String>();
+			boolean error = false;
 			if(null == firstName || firstName.trim().equals("")){
 				errMessage.add("First Name is required");
+				error = true;
 			}
 			if(null == lastName || lastName.trim().equals("")){
 				errMessage.add("Last Name is required");
+				error = true;
 			}
 			if(null == address1 || address1.trim().equals("")){
 				errMessage.add("Address1 is required");
+				error = true;
 			}
 			if(null == city || city.trim().equals("")){
 				errMessage.add("City is required");
+				error = true;
 			}
 			if(null == state || state.equals("")){
 				errMessage.add("State is required");
+				error = true;
 			}
 			if(null == zipString || zipString.equals("")){
 				errMessage.add("Zip is required");
-			}else if(zipString.length() != 5 || zipString.length() != 9){
+				error = true;
+			}else if(!(zipString.length() == 5 || zipString.length() == 9)){
 				errMessage.add("Zip should have 5 or 9 digits");
+				error = true;
 			}
-			if(!errMessage.isEmpty()){
+			if(error){
 				request.setAttribute("errList", errMessage);
 				request.getRequestDispatcher("RegistrationForm.jsp").forward(request, response);
 			}else{

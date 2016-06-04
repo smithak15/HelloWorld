@@ -142,11 +142,19 @@
 				$("#zipError").css('display','inline');
 				$("#zipError").css('color','red');
 				error = "true";
-			}else if(!(zip.trim().length == 5 || zip.trim().length == 9)){
-				$("#zipError").html("<small>Zip should have 5 or 9 digits</small>"); 
-				$("#zipError").css('display','inline');
-				$("#zipError").css('color','red');
-				error = "true";
+			}else{ 
+				var re = /[^0-9]/g;
+				if(re.test(zip.trim())){
+					$("#zipError").html("<small>Zip should have 5 or 9 digits</small>"); 
+					$("#zipError").css('display','inline');
+					$("#zipError").css('color','red');
+					error = "true";
+				}else if(!(zip.trim().length == 5 || zip.trim().length == 9)){
+					$("#zipError").html("<small>Zip should have 5 or 9 digits</small>");
+					$("#zipError").css('display','inline');
+					$("#zipError").css('color','red');
+					error = "true";
+				}
 			}
 			if(error == "false"){
 				$("#regForm").submit();

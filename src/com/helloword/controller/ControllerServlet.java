@@ -3,6 +3,7 @@ package com.helloword.controller;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -71,15 +72,44 @@ public class ControllerServlet extends HttpServlet {
 			String address2 = request.getParameter("address2");
 			String city = request.getParameter("city");
 			String state = request.getParameter("state");
-			int zip = Integer.parseInt(request.getParameter("zip"));
+			String zipString = request.getParameter("zip");
+			int zip = 00000;
+			if(null != zipString){ 
+				zip = Integer.parseInt(request.getParameter("zip"));
+			}
 			String country = "US";
-			java.util.Date today = new java.util.Date();
-			java.sql.Timestamp time = new java.sql.Timestamp(today.getTime());
-			Users user = new Users(firstName, lastName, address1, address2, city, state, zip, country, time);
-			dc.registerUser(user);
-			
-			dc.closeConnection();
-			request.getRequestDispatcher("Confirmation.jsp").forward(request, response);
+			List<String> errMessage = new ArrayList<String>();
+			if(null == firstName || firstName.trim().equals("")){
+				errMessage.add("First Name is required");
+			}
+			if(null == lastName || lastName.trim().equals("")){
+				errMessage.add("Last Name is required");
+			}
+			if(null == address1 || address1.trim().equals("")){
+				errMessage.add("Address1 is required");
+			}
+			if(null == city || city.trim().equals("")){
+				errMessage.add("City is required");
+			}
+			if(null == state || state.equals("")){
+				errMessage.add("State is required");
+			}
+			if(null == zipString || zipString.equals("")){
+				errMessage.add("Zip is required");
+			}else if(zipString.length() != 5 || zipString.length() != 9){
+				errMessage.add("Zip should have 5 or 9 digits");
+			}
+			if(!errMessage.isEmpty()){
+				request.setAttribute("errList", errMessage);
+				request.getRequestDispatcher("RegistrationForm.jsp").forward(request, response);
+			}else{
+				java.util.Date today = new java.util.Date();
+				java.sql.Timestamp time = new java.sql.Timestamp(today.getTime());
+				Users user = new Users(firstName, lastName, address1, address2, city, state, zip, country, time);
+				dc.registerUser(user);
+				dc.closeConnection();
+				request.getRequestDispatcher("Confirmation.jsp").forward(request, response);
+			}
 		}catch(Exception e){
 			e.printStackTrace();
 		}

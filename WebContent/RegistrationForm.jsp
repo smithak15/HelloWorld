@@ -1,3 +1,4 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -10,9 +11,16 @@
 	<body>
 		<div class="well col-md-8 col-md-offset-2 row">
 			<h2 class="text-center">Registration Form</h2>
+			<div id="serverErr">
+				<c:if test="${not empty errList}">
+					<c:forEach var="err" items="${errList}">
+						<span style="color: red;"><c:out value="${err}"></c:out><br></span>
+					</c:forEach>
+				</c:if>
+			</div>
 			<form class="form-horizontal" id="regForm" role="form" method="post" action="registrationSubmit.do">
 				<div class="form-group">
-		    		<label class="control-label col-sm-6">First Name:</label>
+		    		<label class="control-label col-sm-6">First Name*:</label>
 		    		<div class="col-sm-4">
 		      			<input type="text" class="form-control" id="fname" name="fname">
 		    		</div>
@@ -20,7 +28,7 @@
 		    		</div>
 		  		</div>
 		  		<div class="form-group">
-		    		<label class="control-label col-sm-6">Last Name:</label>
+		    		<label class="control-label col-sm-6">Last Name*:</label>
 		    		<div class="col-sm-4">
 		      			<input type="text" class="form-control" id="lname" name="lname">
 		    		</div>
@@ -28,7 +36,7 @@
 		    		</div>
 		  		</div>
 		  		<div class="form-group">
-		    		<label class="control-label col-sm-6">Address1:</label>
+		    		<label class="control-label col-sm-6">Address1*:</label>
 		    		<div class="col-sm-4">
 		      			<input type="text" class="form-control" id="address1" name="address1">
 		    		</div>
@@ -44,7 +52,7 @@
 		    		</div>
 		  		</div>
 		  		<div class="form-group">
-		    		<label class="control-label col-sm-6">City:</label>
+		    		<label class="control-label col-sm-6">City*:</label>
 		    		<div class="col-sm-4">
 		      			<input type="text" class="form-control" id="city" name="city">
 		    		</div>
@@ -52,7 +60,7 @@
 		    		</div>
 		  		</div>
 		  		<div class="form-group">
-		    		<label class="control-label col-sm-6">State:</label>
+		    		<label class="control-label col-sm-6">State*:</label>
 		    		<div class="col-sm-4">
 		      			<input type="text" class="form-control" id="state" name="state">
 		    		</div>
@@ -60,7 +68,7 @@
 		    		</div>
 		  		</div>
 		  		<div class="form-group">
-		    		<label class="control-label col-sm-6">Zip:</label>
+		    		<label class="control-label col-sm-6">Zip*:</label>
 		    		<div class="col-sm-4">
 		      			<input type="text" class="form-control" id="zip" name="zip">
 		    		</div>
@@ -92,6 +100,7 @@
 			var state = $("#state").val();
 			var zip = $("#zip").val();
 			var error = "false";
+			$("#serverErr").css('display','none');
 			$("#fnameError").css('display','none');
 			$("#lnameError").css('display','none');
 			$("#addr1Error").css('display','none');

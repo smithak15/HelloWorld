@@ -96,6 +96,9 @@ public class ControllerServlet extends HttpServlet {
 				errMessage.add("Address1 is required");
 				error = true;
 			}
+			if(null == address2){
+				address2 = "";
+			}
 			if(null == city || city.trim().equals("")){
 				errMessage.add("City is required");
 				error = true;

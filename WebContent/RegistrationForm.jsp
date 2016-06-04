@@ -46,7 +46,7 @@
 		  		<div class="form-group">
 		    		<label class="control-label col-sm-6">Address2:</label>
 		    		<div class="col-sm-4">
-		      			<input type="text" class="form-control" id="address1" name="address1">
+		      			<input type="text" class="form-control" id="address2" name="address2">
 		    		</div>
 		    		<div id="addr2Error" style="display: none">
 		    		</div>

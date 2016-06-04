@@ -30,8 +30,10 @@ public class DatabaseConnector {
 	final private String user = "root";
 	final private String passwd = "Kitty.123";
 	
+	
 	/**
 	 * @throws Exception
+	 * Establishes connection with MySQL database
 	 */
 	public void getConnection() throws Exception{
 		try{
@@ -45,12 +47,21 @@ public class DatabaseConnector {
 		}
 	}
 	
+	/**
+	 * @throws Exception
+	 * Closes connection of all SQL classes
+	 */
 	public void closeConnection() throws Exception{
 		if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException logOrIgnore) {}
         if (connect != null) try { connect.close(); } catch (SQLException logOrIgnore) {}
         if (resultSet != null) try { resultSet.close(); } catch (SQLException logOrIgnore) {}
 	}
 	
+	/**
+	 * @param user
+	 * @throws Exception
+	 * This method runs the sql query to insert registration data.
+	 */
 	public void registerUser(Users user) throws Exception{
 		try{
 			String sql = "INSERT INTO USERS(FNAME,LNAME,ADDRESS1,ADDRESS2,CITY,STATE,ZIP,REGISTRATION_DATE,COUNTRY) "
@@ -71,6 +82,11 @@ public class DatabaseConnector {
 		}
 	}
 	
+	/**
+	 * @return report list
+	 * @throws Exception
+	 * This method selects all the records and retreives it as report and returns it.
+	 */
 	public List<Report> generateReport() throws Exception{
 		List<Report> reportList = new ArrayList<Report>();
 		try{

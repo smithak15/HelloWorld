@@ -1,11 +1,19 @@
 package com.helloword.controller;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.helloword.db.*;
+import com.helloworld.entity.Report;
+import com.helloworld.entity.Users;
 
 /**
  * Servlet implementation class ControllerServlet
@@ -46,12 +54,47 @@ public class ControllerServlet extends HttpServlet {
 		String requestUri = request.getRequestURI();
 		if(requestUri.equalsIgnoreCase("/HelloWorldAssignment/registrationSubmit.do")){
 			registerUser(request,response);
+		}else if(requestUri.equalsIgnoreCase("/HelloWorldAssignment/adminReport.do")){
+			generateReport(request,response);
 		}
 	}
 
 	private void registerUser(HttpServletRequest request, HttpServletResponse response) {
 		// TODO Auto-generated method stub
-		
+		try{
+			DatabaseConnector dc = new DatabaseConnector();
+			dc.getConnection();
+			
+			String firstName = request.getParameter("fname");
+			String lastName = request.getParameter("lname");
+			String address1 = request.getParameter("address1");
+			String address2 = request.getParameter("address2");
+			String city = request.getParameter("city");
+			String state = request.getParameter("state");
+			int zip = Integer.parseInt(request.getParameter("zip"));
+			String country = "US";
+			java.util.Date today = new java.util.Date();
+			java.sql.Timestamp time = new java.sql.Timestamp(today.getTime());
+			Users user = new Users(firstName, lastName, address1, address2, city, state, zip, country, time);
+			dc.registerUser(user);
+			
+			dc.closeConnection();
+			request.getRequestDispatcher("Confirmation.jsp").forward(request, response);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
-
+	
+	private void generateReport(HttpServletRequest request, HttpServletResponse response) {
+		try{
+			DatabaseConnector dc = new DatabaseConnector();
+			dc.getConnection();
+			List<Report> registrationList = dc.generateReport();
+			request.setAttribute("registrationList", registrationList);
+			dc.closeConnection();
+			request.getRequestDispatcher("AdminReport.jsp").forward(request, response);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 }
